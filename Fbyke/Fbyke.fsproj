@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Compile Include="Shared.fs" />
+    <Compile Include="Grains.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
@@ -16,6 +17,10 @@
     <PackageReference Include="Microsoft.Orleans.Server" Version="2.0.0" />
     <PackageReference Include="Orleankka.FSharp.Runtime" Version="2.0.0" />
     <PackageReference Include="TaskBuilder.fs" Version="1.2.0-rc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FByke.Contracts\FByke.Contracts.fsproj" />
   </ItemGroup>
 
 </Project>
