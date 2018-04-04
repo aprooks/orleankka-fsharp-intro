@@ -37,6 +37,16 @@ let main argv =
       
       let byke = ActorSystem.typedActorOf<IByke, Message>(system,"first")
       do! byke <! Reserve "Alex"
+
+      try 
+        do! byke <! Reserve "Andrea"
+        printfn "Ohoh, should have failed"
+      with
+      | :? BykeIsReserved ->
+        printfn "Second reservation failed as expected"
+      | _ -> 
+        printfn "some unexpected shit happened"
+
     }
 
     initScript.Wait()
