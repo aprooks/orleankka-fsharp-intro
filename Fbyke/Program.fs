@@ -17,8 +17,8 @@ open Grains
 
 
 [<EntryPoint>]
-let main argv =    
-   
+let main argv =
+
     printfn "Running demo. Booting cluster might take some time ...\n"
 
     let sb = new SiloHostBuilder()
@@ -30,16 +30,26 @@ let main argv =
     use client = host.Connect().Result
 
     let system = client.ActorSystem()
-    
+
     printfn "Cluster booted!"
 
     let initScript = task {
-      
+
       let byke = ActorSystem.typedActorOf<IByke, Message>(system,"first")
       do! byke <! Reserve "Alex"
+
+      try
+        do! byke <! Reserve "Andrea"
+        printfn "Ohoh, should have failed"
+      with
+      | :? BykeIsReserved ->
+        printfn "Second reservation failed as expected"
+      | _ ->
+        printfn "unexpected exception happened"
+
     }
 
     initScript.Wait()
 
-    Console.ReadKey() |> ignore 
+    Console.ReadKey() |> ignore
     0
