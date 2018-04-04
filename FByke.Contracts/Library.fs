@@ -3,9 +3,15 @@ module Byke
 open Orleankka
 open Orleankka.FSharp
 
-type Message = 
-| Reserve of string
+type UserId = UserId of string
 
+
+type Message = 
+| Reserve of UserId
+| CancelReservation of UserId
+| StartTrip of UserId
+| EndTrip of UserId
+| IsAvailable
 
 exception BykeIsReserved
 

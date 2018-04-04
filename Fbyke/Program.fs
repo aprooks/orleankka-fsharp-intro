@@ -36,10 +36,10 @@ let main argv =
     let initScript = task {
 
       let byke = ActorSystem.typedActorOf<IByke, Message>(system,"first")
-      do! byke <! Reserve "Alex"
+      do! byke <! Reserve (UserId "Alex")
 
       try
-        do! byke <! Reserve "Andrea"
+        do! byke <! Reserve (UserId "Andrea")
         printfn "Ohoh, should have failed"
       with
       | :? BykeIsReserved ->
@@ -47,6 +47,9 @@ let main argv =
       | _ ->
         printfn "unexpected exception happened"
 
+      do! byke <! CancelReservation (UserId "Alex")
+      do! byke <! StartTrip (UserId "Andrea")
+      do! byke <! EndTrip  (UserId "Andrea")
     }
 
     initScript.Wait()
