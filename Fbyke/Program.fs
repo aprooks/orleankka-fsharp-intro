@@ -46,7 +46,10 @@ let main argv =
         printfn "Second reservation failed as expected"
       | _ -> 
         printfn "some unexpected shit happened"
-
+      
+      do! byke <! CancelReservation "Alex"
+      do! byke <! StartTrip "Andrea"
+      do! byke <! EndTrip "Andres"
     }
 
     initScript.Wait()
