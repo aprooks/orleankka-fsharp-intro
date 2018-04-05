@@ -12,8 +12,8 @@ open Orleankka.Cluster
 open Orleankka.Client
 open Orleankka.FSharp
 
+open Contracts
 open Byke
-open Grains
 
 
 [<EntryPoint>]
@@ -36,10 +36,13 @@ let main argv =
     let initScript = task {
       
       let byke = ActorSystem.typedActorOf<IByke, Message>(system,"first")
-      do! byke <! Reserve "Alex"
+      do! byke <! Reserve (UserId "Alex")
+
+      let! available = byke <? IsAvailable
+      printfn "Bike is available: %b" available
 
       try 
-        do! byke <! Reserve "Andrea"
+        do! byke <! Reserve (UserId "Andrea")
         printfn "Ohoh, should have failed"
       with
       | :? BykeIsReserved ->
@@ -47,9 +50,9 @@ let main argv =
       | _ -> 
         printfn "some unexpected shit happened"
       
-      do! byke <! CancelReservation "Alex"
-      do! byke <! StartTrip "Andrea"
-      do! byke <! EndTrip "Andres"
+      do! byke <! CancelReservation (UserId "Alex")
+      do! byke <! StartTrip (UserId "Andrea")
+      do! byke <! EndTrip (UserId "Andrea")
     }
 
     initScript.Wait()

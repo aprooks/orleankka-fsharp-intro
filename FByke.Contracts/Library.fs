@@ -1,22 +1,22 @@
-module Byke
-
-open Orleankka
-open Orleankka.FSharp
+module Contracts
 
 type UserId = UserId of string
 
+module Byke = 
 
-type Message = 
-| Reserve of UserId
-| CancelReservation of UserId
-| StartTrip of UserId
-| EndTrip of UserId
-| IsAvailable
+  open Orleankka.FSharp
 
-exception BykeIsReserved
+  type Message = 
+  | Reserve of UserId
+  | CancelReservation of UserId
+  | StartTrip of UserId
+  | EndTrip of UserId
+  | IsAvailable
 
-type IByke = 
-  inherit IActorGrain<Message>
+  exception BykeIsReserved
+
+  type IByke = 
+    inherit IActorGrain<Message>
 
 
 module Bugger = 

@@ -6,6 +6,7 @@ open FSharp.Control.Tasks
 
 open System
 
+open Contracts
 open Byke
 
 type Byke() = 
