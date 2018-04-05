@@ -5,6 +5,7 @@ type UserId = UserId of string
 module Byke = 
 
   open Orleankka.FSharp
+  open Orleankka
 
   type Message = 
   | Reserve of UserId
@@ -26,3 +27,18 @@ module Bugger =
   /// to Orleans.Abstractions which is required for codegen to work
   type IFSharpGotcha =
     inherit Orleans.IGrainWithGuidKey
+    
+
+module UserWallet = 
+  
+  open Orleankka.FSharp
+
+  type Message = 
+  | ``Reserve minimum amount for trip``
+  | Topup of decimal
+  | Charge of decimal
+
+  exception AmountNotEnough
+
+  type IUserWallet = 
+    inherit IActorGrain<Message>

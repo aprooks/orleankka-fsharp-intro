@@ -23,6 +23,11 @@ type Byke() =
                                       TimeSpan.FromMinutes(10.),
                                       TimeSpan.FromMinutes(10.))
             
+            let (UserId id) = byUserId
+            let user = ActorSystem.actorOf<UserWallet.IUserWallet>(x.System, id)
+
+            do! user <! UserWallet.``Reserve minimum amount for trip``
+
             return none()
 
           | CancelReservation userId ->
@@ -50,4 +55,21 @@ type Byke() =
         | other -> 
             printfn "Recieved unhandled type: %s" (other.GetType().Name)
             return none()
+     }
+
+open UserWallet
+
+type UserWalletGrain() = 
+     inherit ActorGrain()
+     interface IUserWallet 
+
+     override x.Receive(message:obj) = task {
+       match message with 
+       | :? UserWallet.Message as msg -> 
+          match msg with
+          | ```Reserve minimum amount for trip`` 
+            -> return none()
+          | Topup _ -> return none()
+
+          | Charge _ -> return none()
      }
