@@ -12,8 +12,8 @@ open Orleankka.Cluster
 open Orleankka.Client
 open Orleankka.FSharp
 
+open Contracts
 open Byke
-open Grains
 
 
 [<EntryPoint>]
@@ -37,6 +37,9 @@ let main argv =
 
       let byke = ActorSystem.typedActorOf<IByke, Message>(system,"first")
       do! byke <! Reserve (UserId "Alex")
+
+      let! available = byke <? IsAvailable
+      printfn "Bike is available: %b" available
 
       try
         do! byke <! Reserve (UserId "Andrea")
