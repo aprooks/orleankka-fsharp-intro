@@ -75,4 +75,5 @@ type UserWalletGrain() =
           | Topup _ -> return none()
 
           | Charge _ -> return none()
+       | _ -> return unhandled()
      }
