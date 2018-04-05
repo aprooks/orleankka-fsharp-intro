@@ -35,7 +35,7 @@ let main argv =
 
     let initScript = task {
       
-      let byke = ActorSystem.typedActorOf<IByke, Message>(system,"first")
+      let byke = ActorSystem.actorOf<IByke>(system,"first")
       do! byke <! Reserve (UserId "Alex")
 
       let! available = byke <? IsAvailable
@@ -45,7 +45,7 @@ let main argv =
         do! byke <! Reserve (UserId "Andrea")
         printfn "Ohoh, should have failed"
       with
-      | :? BykeIsReserved ->
+      | BykeIsReserved ->
         printfn "Second reservation failed as expected"
       | _ -> 
         printfn "some unexpected shit happened"
