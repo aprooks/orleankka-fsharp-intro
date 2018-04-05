@@ -23,6 +23,8 @@ type Byke() =
                                       TimeSpan.FromMinutes(10.),
                                       TimeSpan.FromMinutes(10.))
             
+            // add helper functions:
+            // let getWalletGrain System*UserId -> 
             let (UserId id) = byUserId
             let user = ActorSystem.actorOf<UserWallet.IUserWallet>(x.System, id)
 
@@ -49,6 +51,7 @@ type Byke() =
             printfn "ticked"
             do! x.Reminders.Unregister("expired")
           | _ ->
+            // observable in logs only
             failwith "don't do this!"
           return none()
 
