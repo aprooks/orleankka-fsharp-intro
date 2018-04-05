@@ -45,7 +45,7 @@ let main argv =
         do! byke <! Reserve (UserId "Andrea")
         printfn "Ohoh, should have failed"
       with
-      | :? BykeIsReserved ->
+      | BykeIsReserved ->
         printfn "Second reservation failed as expected"
       | _ ->
         printfn "unexpected exception happened"
