@@ -72,8 +72,9 @@ type UserWalletGrain() =
           match msg with
           | ```Reserve minimum amount for trip`` 
             -> return none()
-          | Topup _ -> return none()
-
-          | Charge _ -> return none()
+          | Topup _ 
+            -> return none()
+          | Charge _ 
+            -> return none()
        | _ -> return unhandled()
      }
