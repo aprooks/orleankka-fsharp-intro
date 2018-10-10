@@ -9,22 +9,20 @@ open System
 open Contracts
 open Byke
 
-type Byke() = 
+type Byke() =
      inherit ActorGrain()
-     interface IByke 
+     interface IByke
 
      override x.Receive(message:obj) = task {
-        match message with 
+        match message with
         | :? Message as msg ->
           match msg with
-          | Reserve byUserId -> 
-            
+          | Reserve byUserId ->
+
             do! x.Reminders.Register("expired",
                                       TimeSpan.FromMinutes(10.),
                                       TimeSpan.FromMinutes(10.))
-            
-            // add helper functions:
-            // let getWalletGrain System*UserId -> 
+
             let (UserId id) = byUserId
             let user = ActorSystem.actorOf<UserWallet.IUserWallet>(x.System, id)
 
@@ -46,8 +44,8 @@ type Byke() =
             return some(true)
 
         | :? Reminder as r ->
-          match r.Name with 
-          | "expired" -> 
+          match r.Name with
+          | "expired" ->
             printfn "ticked"
             do! x.Reminders.Unregister("expired")
           | _ ->
@@ -55,26 +53,26 @@ type Byke() =
             failwith "don't do this!"
           return none()
 
-        | other -> 
+        | other ->
             printfn "Recieved unhandled type: %s" (other.GetType().Name)
             return none()
      }
 
 open UserWallet
 
-type UserWalletGrain() = 
+type UserWalletGrain() =
      inherit ActorGrain()
-     interface IUserWallet 
+     interface IUserWallet
 
      override x.Receive(message:obj) = task {
-       match message with 
-       | :? UserWallet.Message as msg -> 
+       match message with
+       | :? UserWallet.Message as msg ->
           match msg with
-          | ```Reserve minimum amount for trip`` 
+          | ```Reserve minimum amount for trip``
             -> return none()
-          | Topup _ 
+          | Topup _
             -> return none()
-          | Charge _ 
+          | Charge _
             -> return none()
        | _ -> return unhandled()
      }
