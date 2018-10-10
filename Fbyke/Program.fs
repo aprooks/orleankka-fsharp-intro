@@ -24,12 +24,12 @@ let main argv =
     let sb = new SiloHostBuilder()
     sb.AddAssembly(typeof<Byke.Message>.Assembly)
     sb.AddAssembly(Assembly.GetExecutingAssembly())
+    sb.EnableDirectClient() |> ignore
     sb.UseOrleankka() |> ignore
 
     use host = sb.Start().Result
-    use client = host.Connect().Result
 
-    let system = client.ActorSystem()
+    let system = host.ActorSystem()
 
     printfn "Cluster booted!"
 
