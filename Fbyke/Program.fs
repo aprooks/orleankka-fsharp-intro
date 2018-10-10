@@ -48,7 +48,7 @@ let main argv =
       | BykeIsReserved ->
         printfn "Second reservation failed as expected"
       | _ ->
-        printfn "some unexpected shit happened"
+        printfn "unexpected exception happened"
 
       do! byke <! CancelReservation (UserId "Alex")
       do! byke <! StartTrip (UserId "Andrea")
